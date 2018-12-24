@@ -9,9 +9,18 @@
 import Foundation
 
 protocol RegionSetupViewOutput: AnyObject {
-  
+  func viewIsReady()
+  func saveButtonTapped()
 }
 
 final class RegionSetupPresenter: RegionSetupViewOutput {
   weak var view: RegionSetupViewInput?
+  
+  func viewIsReady() {
+    
+  }
+  
+  func saveButtonTapped() {
+    
+  }
 }

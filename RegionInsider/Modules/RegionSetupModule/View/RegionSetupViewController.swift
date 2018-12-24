@@ -34,12 +34,14 @@ class RegionSetupViewController: UIViewController {
   // MARK: - Lifecycle
   override func viewDidLoad() {
     super.viewDidLoad()
+    hideKeyboardOnTapAround()
     configureUI()
+    output.viewIsReady()
   }
   
   // MARK: - Actions
   @IBAction private func didTapSaveButton(_ sender: Any) {
-    // output.saveButtonTapped()
+    output.saveButtonTapped()
   }
 }
 

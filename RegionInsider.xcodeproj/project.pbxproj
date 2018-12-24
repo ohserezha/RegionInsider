@@ -18,6 +18,7 @@
 		C314FF0D21D1486D000C409A /* RegionMonitoringPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C314FF0C21D1486D000C409A /* RegionMonitoringPresenter.swift */; };
 		C380E5C321D154310072BC69 /* UIStoryboard+create.swift in Sources */ = {isa = PBXBuildFile; fileRef = C380E5C221D154310072BC69 /* UIStoryboard+create.swift */; };
 		C380E5C621D154BA0072BC69 /* UIViewController+StoryboardIdentifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C380E5C521D154BA0072BC69 /* UIViewController+StoryboardIdentifiable.swift */; };
+		C380E5C821D17EF90072BC69 /* UIViewController+Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C380E5C721D17EF90072BC69 /* UIViewController+Keyboard.swift */; };
 		C39AB5CD21D12A1200D2F9AD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39AB5CC21D12A1200D2F9AD /* AppDelegate.swift */; };
 		C39AB5D421D12A1300D2F9AD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C39AB5D321D12A1300D2F9AD /* Assets.xcassets */; };
 		C39AB5D721D12A1300D2F9AD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C39AB5D521D12A1300D2F9AD /* LaunchScreen.storyboard */; };
@@ -35,6 +36,7 @@
 		C314FF0C21D1486D000C409A /* RegionMonitoringPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionMonitoringPresenter.swift; sourceTree = "<group>"; };
 		C380E5C221D154310072BC69 /* UIStoryboard+create.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStoryboard+create.swift"; sourceTree = "<group>"; };
 		C380E5C521D154BA0072BC69 /* UIViewController+StoryboardIdentifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+StoryboardIdentifiable.swift"; sourceTree = "<group>"; };
+		C380E5C721D17EF90072BC69 /* UIViewController+Keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Keyboard.swift"; sourceTree = "<group>"; };
 		C39AB5C921D12A1200D2F9AD /* RegionInsider.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RegionInsider.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C39AB5CC21D12A1200D2F9AD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C39AB5D321D12A1300D2F9AD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -138,6 +140,7 @@
 			children = (
 				C380E5C221D154310072BC69 /* UIStoryboard+create.swift */,
 				C380E5C521D154BA0072BC69 /* UIViewController+StoryboardIdentifiable.swift */,
+				C380E5C721D17EF90072BC69 /* UIViewController+Keyboard.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -245,6 +248,7 @@
 			files = (
 				C380E5C621D154BA0072BC69 /* UIViewController+StoryboardIdentifiable.swift in Sources */,
 				C380E5C321D154310072BC69 /* UIStoryboard+create.swift in Sources */,
+				C380E5C821D17EF90072BC69 /* UIViewController+Keyboard.swift in Sources */,
 				C314FF0B21D14856000C409A /* LocationService.swift in Sources */,
 				C314FF0821D147E2000C409A /* RegionMonitoringViewController.swift in Sources */,
 				C314FF0421D1468D000C409A /* RegionMonitoringModuleFactory.swift in Sources */,

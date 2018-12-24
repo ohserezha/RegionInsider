@@ -126,6 +126,9 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BKv-Wd-j7V" userLabel="Add Regions Button">
                                         <rect key="frame" x="164.5" y="346" width="46" height="30"/>
                                         <state key="normal" title="Button"/>
+                                        <connections>
+                                            <action selector="didTapSaveButton:" destination="Xei-x7-ElL" eventType="touchUpInside" id="ceR-G6-sMi"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -154,6 +157,19 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6LO-J8-5YA"/>
                     </view>
+                    <connections>
+                        <outlet property="addGeoRegionsButton" destination="BKv-Wd-j7V" id="9D5-aF-6aL"/>
+                        <outlet property="geoRegionHeaderLabel" destination="nZ2-Lv-KvU" id="3FH-16-idi"/>
+                        <outlet property="latitudeLabel" destination="t5w-kx-5a1" id="h9M-Zb-dDI"/>
+                        <outlet property="latitudeTextField" destination="4JY-ON-UmO" id="HZm-ix-o5N"/>
+                        <outlet property="longitudeLabel" destination="pwE-rQ-NYP" id="e10-py-DmQ"/>
+                        <outlet property="longitudeTextField" destination="zV9-eg-N8z" id="We1-dp-j1N"/>
+                        <outlet property="networkRegionHeaderLabel" destination="6YV-k6-QbE" id="gdl-kU-L0w"/>
+                        <outlet property="networkSSIDLabel" destination="qu3-uO-SbB" id="xlj-BH-K60"/>
+                        <outlet property="networkSSIDTextField" destination="zbF-Zb-2lY" id="jGU-0W-LAx"/>
+                        <outlet property="regionRadiusLabel" destination="cRj-ND-SIl" id="vKv-Ss-ios"/>
+                        <outlet property="regionRadiusTextField" destination="Hf3-uf-r9u" id="aDi-2a-dBM"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ory-k4-VNX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

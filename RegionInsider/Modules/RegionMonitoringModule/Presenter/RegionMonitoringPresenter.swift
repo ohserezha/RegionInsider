@@ -9,7 +9,7 @@
 import Foundation
 
 protocol RegionMonitoringViewOutput: AnyObject {
-  
+  func viewIsReady()
 }
 
 final class RegionMonitoringPresenter {
@@ -17,5 +17,12 @@ final class RegionMonitoringPresenter {
 }
 
 extension RegionMonitoringPresenter: RegionMonitoringViewOutput {
-  
+  func viewIsReady() {
+    view?.configure(state: .outside)
+  }
+}
+
+enum UserLocationState {
+  case inside
+  case outside
 }

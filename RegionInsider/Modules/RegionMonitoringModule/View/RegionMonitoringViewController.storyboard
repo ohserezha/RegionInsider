@@ -17,9 +17,37 @@
                     <view key="view" contentMode="scaleToFill" id="iQi-RG-mlt">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Z4-38-Wti" userLabel="Status View">
+                                <rect key="frame" x="75" y="231" width="225" height="225"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O8j-zA-W3g" userLabel="Status Label">
+                                        <rect key="frame" x="91.5" y="102" width="42" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="7Z4-38-Wti" secondAttribute="height" id="GTb-sl-w8U"/>
+                                    <constraint firstItem="O8j-zA-W3g" firstAttribute="centerX" secondItem="7Z4-38-Wti" secondAttribute="centerX" id="Rit-xh-dlS"/>
+                                    <constraint firstItem="O8j-zA-W3g" firstAttribute="centerY" secondItem="7Z4-38-Wti" secondAttribute="centerY" id="t0u-80-lqd"/>
+                                </constraints>
+                            </view>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="7Z4-38-Wti" firstAttribute="width" secondItem="iQi-RG-mlt" secondAttribute="width" multiplier="0.6" id="8kf-lQ-JFD"/>
+                            <constraint firstItem="7Z4-38-Wti" firstAttribute="centerX" secondItem="NvO-ZP-FNs" secondAttribute="centerX" id="qo5-DB-Wxj"/>
+                            <constraint firstItem="7Z4-38-Wti" firstAttribute="centerY" secondItem="NvO-ZP-FNs" secondAttribute="centerY" id="wCW-4A-GIK"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="NvO-ZP-FNs"/>
                     </view>
+                    <connections>
+                        <outlet property="stateLabel" destination="O8j-zA-W3g" id="979-Ge-Ron"/>
+                        <outlet property="stateView" destination="7Z4-38-Wti" id="3Z7-qQ-Qyd"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Cqw-rJ-zx0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

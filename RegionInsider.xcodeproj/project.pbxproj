@@ -42,6 +42,7 @@
 		C39AB5D321D12A1300D2F9AD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C39AB5D621D12A1300D2F9AD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C39AB5D821D12A1300D2F9AD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C3D902F821D5A30E00D43717 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,6 +151,7 @@
 			children = (
 				C39AB5CB21D12A1200D2F9AD /* RegionInsider */,
 				C39AB5CA21D12A1200D2F9AD /* Products */,
+				C3D902F421D5A19600D43717 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -172,6 +174,14 @@
 				C39AB5D821D12A1300D2F9AD /* Info.plist */,
 			);
 			path = RegionInsider;
+			sourceTree = "<group>";
+		};
+		C3D902F421D5A19600D43717 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C3D902F821D5A30E00D43717 /* SystemConfiguration.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -209,6 +219,9 @@
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
+							};
+							com.apple.WAC = {
+								enabled = 0;
 							};
 						};
 					};
@@ -399,6 +412,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 68562FZ43T;
 				INFOPLIST_FILE = RegionInsider/Info.plist;
@@ -409,6 +423,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.ohserezha.RegionInsider;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -418,6 +433,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 68562FZ43T;
 				INFOPLIST_FILE = RegionInsider/Info.plist;
@@ -428,6 +444,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.ohserezha.RegionInsider;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

@@ -8,21 +8,27 @@
 
 import CoreLocation
 
+let region = CLCircularRegion(center: CLLocationCoordinate2DMake(50.363343, 30.596162), radius: 300, identifier: "arsenalna")
+
+enum RegionState {
+  case inside
+  case outside
+  case undefined
+}
+
+
 protocol LocationServiceDelegate: class {
-  func locationService(_ service: LocationService, didEnterRegion region: CLCircularRegion)
-  func locationService(_ service: LocationService, didExitRegion region: CLCircularRegion)
-  func locationService(_ service: LocationService, didDetermineRegionState: CLRegionState)
+  func locationService(_ service: LocationService, didDetermineRegionState: RegionState)
   func locationService(_ service: LocationService, didFail error: Error)
   func locationServicesDisabled()
 }
+//
+//extension LocationServiceDelegate {
+//  func locationService(_ service: LocationService, didDetermineRegionState: RegionState) {}
+//  func locationService(_ service: LocationService, didFail error: Error) {}
+//  func locationServicesDisabled() {}
+//}
 
-extension LocationServiceDelegate {
-  func locationService(_ service: LocationService, didEnterRegion region: CLCircularRegion) {}
-  func locationService(_ service: LocationService, didExitRegion region: CLCircularRegion) {}
-  func locationService(_ service: LocationService, didDetermineRegionState: CLRegionState) {}
-  func locationService(_ service: LocationService, didFail error: Error) {}
-  func locationServicesDisabled() {}
-}
 
 typealias SSID = String
 
@@ -31,8 +37,9 @@ class LocationService: NSObject {
   private let locationManager: CLLocationManager
   
   weak var delegate: LocationServiceDelegate?
-  var monitoredRegion: CLRegion?
-  var monitoredNetwork: SSID?
+  
+  var monitoredGeoRegion: CLCircularRegion?
+  var monitoredNetworkSSID: SSID?
   
   private override init() {
     locationManager = CLLocationManager()
@@ -42,72 +49,90 @@ class LocationService: NSObject {
     locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
   }
   
-  func updateLocation() {
+  func checkPermissionsAndStartMonitoring() {
     let authStatus = CLLocationManager.authorizationStatus()
     switch authStatus {
     case .notDetermined:
       locationManager.requestAlwaysAuthorization()
     case .authorizedAlways:
-      let region = CLCircularRegion(center: CLLocationCoordinate2DMake(50.363343, 30.596162), radius: 300, identifier: "arsenalna")
       startMonitoringGeoRegion(region)
-      isInsideMonitoredRegion()
     default:
       delegate?.locationServicesDisabled()
     }
   }
   
-  func isInsideMonitoredRegion() {
-    if let monitoredRegion = monitoredRegion {
-      locationManager.requestState(for: monitoredRegion)
+  /// checks if device is inside of at least one of monitored locations (region or network)
+  /// and calls delegate's locationService(_:didDetermineRegionState)
+  func checkIfInsideMonitoredLocations() {
+    if let monitoredGeoRegion = monitoredGeoRegion {
+      startMonitoringGeoRegion(monitoredGeoRegion)
+      locationManager.requestState(for: monitoredGeoRegion)
     } else {
       return
     }
   }
   
+  func stopMonitoring() {
+    if let monitoredGeoRegion = monitoredGeoRegion {
+      locationManager.stopMonitoring(for: monitoredGeoRegion)
+      self.monitoredGeoRegion = nil
+    }
+    monitoredNetworkSSID = nil
+  }
+}
+
+
+private extension LocationService {
+  /// checks if device is inside network with provided SSID
+  func monitoredNetworkState() -> RegionState {
+    if let _ = monitoredNetworkSSID {
+      /*
+       here had to be obtaibing network SSID and compare it to monitoredNetworkSSID
+       but i don't have apple developer program enrollment
+       thereby i can't add Wireless Info Access to app's entitlements
+       and induced to return .undefined =(
+      */
+      return .undefined
+    } else {
+      return .undefined
+    }
+  }
+  
+  /// starts monitoring provided CLRegion
   func startMonitoringGeoRegion(_ region: CLCircularRegion) {
-    clearAllMonitoredRegions()
+    for region in locationManager.monitoredRegions {
+      locationManager.stopMonitoring(for: region)
+    }
     guard
       CLLocationManager.isMonitoringAvailable(for: CLCircularRegion.self),
       CLLocationManager.authorizationStatus() == .authorizedAlways else {
         delegate?.locationServicesDisabled()
         return
     }
-    monitoredRegion = region
+    monitoredGeoRegion = region
     locationManager.startMonitoring(for: region)
   }
   
-  static func stopMonitoringRegions() {
-    let locationManager = CLLocationManager()
-    for region in locationManager.monitoredRegions {
-      locationManager.stopMonitoring(for: region)
+  func combineStates(geoRegionState: CLRegionState, networkRegionState: RegionState) -> RegionState {
+    switch (geoRegionState, networkRegionState) {
+    case (.inside, _):
+      return .inside
+    case (_, .inside):
+      return .inside
+    case (.outside, _):
+      return .outside
+    case (_, .outside):
+      return .outside
+    default:
+      return .undefined
     }
   }
 }
 
-private extension LocationService {
-  func clearAllMonitoredRegions() {
-    monitoredRegion = nil
-    locationManager.monitoredRegions.forEach {
-      locationManager.stopMonitoring(for: $0)
-    }
-  }
-}
 
 extension LocationService: CLLocationManagerDelegate {
   func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-    updateLocation()
-  }
-  
-  func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
-    if let region = region as? CLCircularRegion {
-      delegate?.locationService(self, didEnterRegion: region)
-    }
-  }
-  
-  func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
-    if let region = region as? CLCircularRegion {
-      delegate?.locationService(self, didExitRegion: region)
-    }
+    checkPermissionsAndStartMonitoring()
   }
   
   func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
@@ -115,6 +140,7 @@ extension LocationService: CLLocationManagerDelegate {
   }
   
   func locationManager(_ manager: CLLocationManager, didDetermineState state: CLRegionState, for region: CLRegion) {
-    delegate?.locationService(self, didDetermineRegionState: state)
+    let resultingState = combineStates(geoRegionState: state, networkRegionState: monitoredNetworkState())
+    delegate?.locationService(self, didDetermineRegionState: resultingState)
   }
 }

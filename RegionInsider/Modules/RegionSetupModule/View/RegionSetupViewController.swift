@@ -13,13 +13,15 @@ protocol RegionSetupViewInput: AnyObject {
   func showAlert(title: String?, message: String)
 }
 
-enum TextFieldType {
+
+enum InputValueType {
   case latitude
   case longitude
   case radius
   case SSID
-  case undefined
+  case unknown
 }
+
 
 class RegionSetupViewController: UIViewController {
   // MARK: - Output
@@ -54,13 +56,16 @@ class RegionSetupViewController: UIViewController {
                                                          long: longitudeTextField.text,
                                                          radius: regionRadiusTextField.text,
                                                          SSID: networkSSIDTextField.text)
-    output.saveInput(viewConfiguration)
+    output.proceed(with: viewConfiguration)
   }
 }
 
 extension RegionSetupViewController: RegionSetupViewInput {
   func configure(with configuration: RegionSetupViewConfiguration) {
-    
+    latitudeTextField.text = configuration.lat
+    longitudeTextField.text = configuration.long
+    regionRadiusTextField.text = configuration.radius
+    networkSSIDTextField.text = configuration.SSID
   }
   
   func showAlert(title: String?, message: String) {
@@ -73,7 +78,7 @@ extension RegionSetupViewController: RegionSetupViewInput {
 
 extension RegionSetupViewController: UITextFieldDelegate {
   func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-    var textFieldType: TextFieldType
+    var textFieldType: InputValueType
     
     switch textField {
     case longitudeTextField:
@@ -85,10 +90,10 @@ extension RegionSetupViewController: UITextFieldDelegate {
     case networkSSIDTextField:
       textFieldType = .SSID
     default:
-      textFieldType = .undefined
+      textFieldType = .unknown
     }
     
-    return output.validateInput(textField.text, for: textFieldType)
+    return output.validateInputField(textField.text, for: textFieldType)
   }
 }
 

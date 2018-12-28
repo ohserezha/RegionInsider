@@ -12,12 +12,13 @@ final class RegionMonitoringModuleFactory {
   class func makeRegionMonitoringModule() -> UIViewController {
     let controller = UIStoryboard.create(RegionMonitoringViewController.self)
     
-    //    let router = RegionSetupRouter()
-    //    router.view = controller
+    let router = RegionMonitoringRouter()
+    router.view = controller
     
     let presenter = RegionMonitoringPresenter()
     presenter.view = controller
-    //    presenter.router = router
+    presenter.router = router
+    presenter.locationService = LocationService.shared
     
     controller.output = presenter
     

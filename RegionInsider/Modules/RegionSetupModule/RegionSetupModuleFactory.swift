@@ -17,6 +17,7 @@ final class RegionSetupModuleFactory {
     
     let presenter = RegionSetupPresenter()
     presenter.view = controller
+    presenter.locationService = LocationService.shared
 //    presenter.router = router
     
     controller.output = presenter

@@ -9,68 +9,71 @@
 import CoreLocation
 
 protocol LocationServiceDelegate: class {
-  func locationService(_ service: LocationService, didChangeAuthorization status: CLAuthorizationStatus)
-  func locationService(_ service: LocationService, didUpdateLocation location: CLLocation)
   func locationService(_ service: LocationService, didEnterRegion region: CLCircularRegion)
   func locationService(_ service: LocationService, didExitRegion region: CLCircularRegion)
-  func showLocationDisabledAlert()
+  func locationService(_ service: LocationService, didDetermineRegionState: CLRegionState)
+  func locationService(_ service: LocationService, didFail error: Error)
+  func locationServicesDisabled()
 }
 
 extension LocationServiceDelegate {
-  func locationService(_ service: LocationService, didChangeAuthorization status: CLAuthorizationStatus) {}
-  func locationService(_ service: LocationService, didUpdateLocation location: CLLocation) {}
   func locationService(_ service: LocationService, didEnterRegion region: CLCircularRegion) {}
   func locationService(_ service: LocationService, didExitRegion region: CLCircularRegion) {}
-  func showLocationDisabledAlert() {}
+  func locationService(_ service: LocationService, didDetermineRegionState: CLRegionState) {}
+  func locationService(_ service: LocationService, didFail error: Error) {}
+  func locationServicesDisabled() {}
 }
 
+typealias SSID = String
+
 class LocationService: NSObject {
-  private let locationManager = CLLocationManager()
+  static let shared = LocationService()
+  private let locationManager: CLLocationManager
+  
   weak var delegate: LocationServiceDelegate?
+  var monitoredRegion: CLRegion?
+  var monitoredNetwork: SSID?
   
-  var location: CLLocation? {
-    return locationManager.location
-  }
-  
-  override init() {
+  private override init() {
+    locationManager = CLLocationManager()
     super.init()
-    locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
     locationManager.delegate = self
-    startMonitoringLocation()
+    locationManager.allowsBackgroundLocationUpdates = true
+    locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
   }
   
-  func authorizationStatus() -> CLAuthorizationStatus {
-    return CLLocationManager.authorizationStatus()
+  func updateLocation() {
+    let authStatus = CLLocationManager.authorizationStatus()
+    switch authStatus {
+    case .notDetermined:
+      locationManager.requestAlwaysAuthorization()
+    case .authorizedAlways:
+      let region = CLCircularRegion(center: CLLocationCoordinate2DMake(50.363343, 30.596162), radius: 300, identifier: "arsenalna")
+      startMonitoringGeoRegion(region)
+      isInsideMonitoredRegion()
+    default:
+      delegate?.locationServicesDisabled()
+    }
   }
   
-  func requestAlwaysAuthorization() {
-    locationManager.requestAlwaysAuthorization()
+  func isInsideMonitoredRegion() {
+    if let monitoredRegion = monitoredRegion {
+      locationManager.requestState(for: monitoredRegion)
+    } else {
+      return
+    }
   }
   
-  func requestWhenInUseAuthorization() {
-    locationManager.requestWhenInUseAuthorization()
-  }
-  
-  func startMonitoringLocation() {
-    locationManager.startUpdatingLocation()
-  }
-  
-  func stopMonitoringLocation() {
-    locationManager.stopUpdatingLocation()
-  }
-  
-  func startMonitoringRegions(_ regionList: [CLCircularRegion]) {
+  func startMonitoringGeoRegion(_ region: CLCircularRegion) {
     clearAllMonitoredRegions()
     guard
       CLLocationManager.isMonitoringAvailable(for: CLCircularRegion.self),
       CLLocationManager.authorizationStatus() == .authorizedAlways else {
+        delegate?.locationServicesDisabled()
         return
     }
-    regionList.forEach { locationManager.startMonitoring(for: $0) }
-  }
-  
-  func showLocationDisabledAlert() {
-    delegate?.showLocationDisabledAlert()
+    monitoredRegion = region
+    locationManager.startMonitoring(for: region)
   }
   
   static func stopMonitoringRegions() {
@@ -83,6 +86,7 @@ class LocationService: NSObject {
 
 private extension LocationService {
   func clearAllMonitoredRegions() {
+    monitoredRegion = nil
     locationManager.monitoredRegions.forEach {
       locationManager.stopMonitoring(for: $0)
     }
@@ -91,16 +95,7 @@ private extension LocationService {
 
 extension LocationService: CLLocationManagerDelegate {
   func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-    if status == .authorizedAlways {
-      locationManager.allowsBackgroundLocationUpdates = true
-    }
-    delegate?.locationService(self, didChangeAuthorization: status)
-  }
-  
-  func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-    if let location = locations.last {
-      delegate?.locationService(self, didUpdateLocation: location)
-    }
+    updateLocation()
   }
   
   func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
@@ -113,5 +108,13 @@ extension LocationService: CLLocationManagerDelegate {
     if let region = region as? CLCircularRegion {
       delegate?.locationService(self, didExitRegion: region)
     }
+  }
+  
+  func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+    delegate?.locationService(self, didFail: error)
+  }
+  
+  func locationManager(_ manager: CLLocationManager, didDetermineState state: CLRegionState, for region: CLRegion) {
+    delegate?.locationService(self, didDetermineRegionState: state)
   }
 }

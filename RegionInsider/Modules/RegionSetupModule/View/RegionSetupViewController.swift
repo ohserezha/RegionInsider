@@ -9,7 +9,16 @@
 import UIKit
 
 protocol RegionSetupViewInput: AnyObject {
-  func configure()
+  func configure(with configuration: RegionSetupViewConfiguration)
+  func showAlert(title: String?, message: String)
+}
+
+enum TextFieldType {
+  case latitude
+  case longitude
+  case radius
+  case SSID
+  case undefined
 }
 
 class RegionSetupViewController: UIViewController {
@@ -29,7 +38,7 @@ class RegionSetupViewController: UIViewController {
   @IBOutlet private weak var networkSSIDLabel: UILabel!
   @IBOutlet private weak var networkSSIDTextField: UITextField!
   
-  @IBOutlet private weak var addGeoRegionsButton: UIButton!
+  @IBOutlet private weak var saveRegionsButton: UIButton!
   
   // MARK: - Lifecycle
   override func viewDidLoad() {
@@ -41,18 +50,46 @@ class RegionSetupViewController: UIViewController {
   
   // MARK: - Actions
   @IBAction private func didTapSaveButton(_ sender: Any) {
-    output.saveButtonTapped()
+    let viewConfiguration = RegionSetupViewConfiguration(lat: latitudeTextField.text,
+                                                         long: longitudeTextField.text,
+                                                         radius: regionRadiusTextField.text,
+                                                         SSID: networkSSIDTextField.text)
+    output.saveInput(viewConfiguration)
   }
 }
 
 extension RegionSetupViewController: RegionSetupViewInput {
-  func configure() {
+  func configure(with configuration: RegionSetupViewConfiguration) {
     
+  }
+  
+  func showAlert(title: String?, message: String) {
+    let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+    let action = UIAlertAction.init(title: "Ok", style: .cancel, handler: nil)
+    alert.addAction(action)
+    present(alert, animated: true, completion: nil)
   }
 }
 
 extension RegionSetupViewController: UITextFieldDelegate {
-  
+  func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+    var textFieldType: TextFieldType
+    
+    switch textField {
+    case longitudeTextField:
+      textFieldType = .longitude
+    case latitudeTextField:
+      textFieldType = .latitude
+    case regionRadiusTextField:
+      textFieldType = .radius
+    case networkSSIDTextField:
+      textFieldType = .SSID
+    default:
+      textFieldType = .undefined
+    }
+    
+    return output.validateInput(textField.text, for: textFieldType)
+  }
 }
 
 private extension RegionSetupViewController {
@@ -62,6 +99,7 @@ private extension RegionSetupViewController {
   }
   
   func configureUI() {
+    // Labels
     navigationItem.title = "Setup Regions"
     
     geoRegionHeaderLabel.text = "Geo Region"
@@ -79,9 +117,23 @@ private extension RegionSetupViewController {
     networkRegionHeaderLabel.text = "Network Region"
     networkRegionHeaderLabel.font = .systemFont(ofSize: Constants.headerFontSize)
     
+    networkSSIDTextField.keyboardType = .asciiCapable
+    networkSSIDTextField.delegate = self
+    
+    // Text Fields
+    latitudeTextField.keyboardType = .decimalPad
+    latitudeTextField.delegate = self
+    
+    longitudeTextField.keyboardType = .decimalPad
+    longitudeTextField.delegate = self
+    
+    regionRadiusTextField.keyboardType = .numberPad
+    regionRadiusTextField.delegate = self
+    
     networkSSIDLabel.text = "Wi-Fi name"
     networkSSIDLabel.font = .systemFont(ofSize: Constants.labelFontSize)
     
-    addGeoRegionsButton.setTitle("Save Regions", for: .normal)
+    // Buttons
+    saveRegionsButton.setTitle("Save Regions", for: .normal)
   }
 }

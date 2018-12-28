@@ -17,12 +17,14 @@ protocol RegionSetupViewOutput: AnyObject {
 }
 
 
-final class RegionSetupPresenter: RegionSetupViewOutput {
+final class RegionSetupPresenter {
   weak var view: RegionSetupViewInput?
+  var router: RegionSetupRouterInput!
   
   var locationService: LocationService!
-  var viewModel: RegionSetupViewConfiguration?
-  
+}
+
+extension RegionSetupPresenter: RegionSetupViewOutput {
   func viewIsReady() {
     let viewConfiguration = RegionSetupViewConfiguration()
     view?.configure(with: viewConfiguration)
@@ -51,9 +53,9 @@ final class RegionSetupPresenter: RegionSetupViewOutput {
     }
     
     if !shouldProceed {
-      view?.showAlert(title: "Nothing to monitor", message: "You have to provide at least one fully described item to monitor")
+      router.toAlert(title: "Nothing to monitor", message: "You have to provide at least one fully described item to monitor")
     } else {
-      // router.toRegionMonitoring()
+      router.toMonitoring()
     }
   }
   
@@ -66,19 +68,19 @@ final class RegionSetupPresenter: RegionSetupViewOutput {
       if let value = Double(text), value < 90, value > -90 {
         return true
       } else {
-        view?.showAlert(title: "Wrong value", message: "latitude has to be between -90 and 90")
+        router.toAlert(title: "Wrong value", message: "latitude has to be between -90 and 90")
       }
     case .longitude:
       if let value = Double(text), value < 180, value > -180 {
         return true
       } else {
-        view?.showAlert(title: "Wrong value", message: "longitude has to be between -180 and 180")
+        router.toAlert(title: "Wrong value", message: "longitude has to be between -180 and 180")
       }
     case .radius:
       if let value = Double(text), value >= 100 {
         return true
       } else {
-        view?.showAlert(title: "Wrong value", message: "radius has to be greater than 100")
+        router.toAlert(title: "Wrong value", message: "radius has to be greater than 100")
       }
     default:
       return true

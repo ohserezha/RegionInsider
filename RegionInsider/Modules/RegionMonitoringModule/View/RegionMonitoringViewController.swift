@@ -9,7 +9,7 @@
 import UIKit
 
 protocol RegionMonitoringViewInput: AnyObject {
-  func configure(state: UserLocationState)
+  func configure(state: RegionState)
 }
 
 class RegionMonitoringViewController: UIViewController {
@@ -22,13 +22,26 @@ class RegionMonitoringViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    configureUI()
     output.viewIsReady()
+  }
+  
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    output.viewDidAppear()
+  }
+  
+  override func viewDidLayoutSubviews() {
+    configureUI()
+  }
+  
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    output.viewWillDisappear()
   }
 }
 
 extension RegionMonitoringViewController: RegionMonitoringViewInput {
-  func configure(state: UserLocationState) {
+  func configure(state: RegionState) {
     switch state {
     case .inside:
       stateView.backgroundColor = UIColor.green.withAlphaComponent(0.5)
@@ -36,12 +49,15 @@ extension RegionMonitoringViewController: RegionMonitoringViewInput {
     case .outside:
       stateView.backgroundColor = UIColor.red.withAlphaComponent(0.5)
       stateLabel.text = "OUTSIDE"
+    case .undefined:
+      stateView.backgroundColor = UIColor.yellow.withAlphaComponent(0.5)
+      stateLabel.text = "UNDEFINED"
     }
   }
 }
 
 private extension RegionMonitoringViewController {
   func configureUI() {
-    stateView.layer.cornerRadius = stateView.bounds.size.width / 2.0
+    stateView.layer.cornerRadius = stateView.frame.size.width / 2.0
   }
 }

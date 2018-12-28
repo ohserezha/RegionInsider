@@ -12,13 +12,13 @@ final class RegionSetupModuleFactory {
   class func makeRegionSetupModule() -> UIViewController {
     let controller = UIStoryboard.create(RegionSetupViewController.self)
     
-//    let router = RegionSetupRouter()
-//    router.view = controller
+    let router = RegionSetupRouter()
+    router.view = controller
     
     let presenter = RegionSetupPresenter()
     presenter.view = controller
     presenter.locationService = LocationService.shared
-//    presenter.router = router
+    presenter.router = router
     
     controller.output = presenter
     

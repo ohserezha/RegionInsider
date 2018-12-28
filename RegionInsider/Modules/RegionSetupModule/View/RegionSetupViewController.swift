@@ -10,7 +10,6 @@ import UIKit
 
 protocol RegionSetupViewInput: AnyObject {
   func configure(with configuration: RegionSetupViewConfiguration)
-  func showAlert(title: String?, message: String)
 }
 
 
@@ -66,13 +65,6 @@ extension RegionSetupViewController: RegionSetupViewInput {
     longitudeTextField.text = configuration.long
     regionRadiusTextField.text = configuration.radius
     networkSSIDTextField.text = configuration.SSID
-  }
-  
-  func showAlert(title: String?, message: String) {
-    let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-    let action = UIAlertAction.init(title: "Ok", style: .cancel, handler: nil)
-    alert.addAction(action)
-    present(alert, animated: true, completion: nil)
   }
 }
 

@@ -22,6 +22,9 @@
 		C39AB5CD21D12A1200D2F9AD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39AB5CC21D12A1200D2F9AD /* AppDelegate.swift */; };
 		C39AB5D421D12A1300D2F9AD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C39AB5D321D12A1300D2F9AD /* Assets.xcassets */; };
 		C39AB5D721D12A1300D2F9AD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C39AB5D521D12A1300D2F9AD /* LaunchScreen.storyboard */; };
+		C3EE223821D5DF0C000FBAB2 /* RegionMonitoringRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3EE223721D5DF0C000FBAB2 /* RegionMonitoringRouter.swift */; };
+		C3EE223B21D5E083000FBAB2 /* BaseRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3EE223A21D5E083000FBAB2 /* BaseRouter.swift */; };
+		C3EE223F21D5E33C000FBAB2 /* RegionSetupRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3EE223E21D5E33C000FBAB2 /* RegionSetupRouter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +46,9 @@
 		C39AB5D621D12A1300D2F9AD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C39AB5D821D12A1300D2F9AD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C3D902F821D5A30E00D43717 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		C3EE223721D5DF0C000FBAB2 /* RegionMonitoringRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionMonitoringRouter.swift; sourceTree = "<group>"; };
+		C3EE223A21D5E083000FBAB2 /* BaseRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseRouter.swift; sourceTree = "<group>"; };
+		C3EE223E21D5E33C000FBAB2 /* RegionSetupRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionSetupRouter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +68,7 @@
 				C314FEFC21D145A5000C409A /* RegionSetupModuleFactory.swift */,
 				C314FEF621D13D7B000C409A /* View */,
 				C314FEF721D13D8B000C409A /* Presenter */,
+				C3EE223521D5DEE1000FBAB2 /* Router */,
 			);
 			path = RegionSetupModule;
 			sourceTree = "<group>";
@@ -89,6 +96,7 @@
 				C314FF0321D1468D000C409A /* RegionMonitoringModuleFactory.swift */,
 				C314FF0221D14673000C409A /* View */,
 				C314FF0121D1466C000C409A /* Presenter */,
+				C3EE223621D5DEF2000FBAB2 /* Router */,
 			);
 			path = RegionMonitoringModule;
 			sourceTree = "<group>";
@@ -96,6 +104,7 @@
 		C314FF0021D14627000C409A /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				C3EE223921D5E075000FBAB2 /* Common */,
 				C314FEF021D13C99000C409A /* RegionSetupModule */,
 				C314FEFF21D145F7000C409A /* RegionMonitoringModule */,
 			);
@@ -184,6 +193,30 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		C3EE223521D5DEE1000FBAB2 /* Router */ = {
+			isa = PBXGroup;
+			children = (
+				C3EE223E21D5E33C000FBAB2 /* RegionSetupRouter.swift */,
+			);
+			path = Router;
+			sourceTree = "<group>";
+		};
+		C3EE223621D5DEF2000FBAB2 /* Router */ = {
+			isa = PBXGroup;
+			children = (
+				C3EE223721D5DF0C000FBAB2 /* RegionMonitoringRouter.swift */,
+			);
+			path = Router;
+			sourceTree = "<group>";
+		};
+		C3EE223921D5E075000FBAB2 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				C3EE223A21D5E083000FBAB2 /* BaseRouter.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -264,13 +297,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C3EE223821D5DF0C000FBAB2 /* RegionMonitoringRouter.swift in Sources */,
 				C380E5C621D154BA0072BC69 /* UIViewController+StoryboardIdentifiable.swift in Sources */,
 				C380E5C321D154310072BC69 /* UIStoryboard+create.swift in Sources */,
 				C380E5C821D17EF90072BC69 /* UIViewController+Keyboard.swift in Sources */,
 				C314FF0B21D14856000C409A /* LocationService.swift in Sources */,
 				C314FF0821D147E2000C409A /* RegionMonitoringViewController.swift in Sources */,
 				C314FF0421D1468D000C409A /* RegionMonitoringModuleFactory.swift in Sources */,
+				C3EE223B21D5E083000FBAB2 /* BaseRouter.swift in Sources */,
 				C314FEFD21D145A5000C409A /* RegionSetupModuleFactory.swift in Sources */,
+				C3EE223F21D5E33C000FBAB2 /* RegionSetupRouter.swift in Sources */,
 				C314FF0D21D1486D000C409A /* RegionMonitoringPresenter.swift in Sources */,
 				C39AB5CD21D12A1200D2F9AD /* AppDelegate.swift in Sources */,
 				C314FEF421D13D73000C409A /* RegionSetupViewController.swift in Sources */,

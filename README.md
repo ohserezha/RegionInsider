@@ -10,4 +10,3 @@ Note: if device coordinates are reported outside of the zone, but the device sti
 >
 **NOTICE!**
 There is no Wi-Fi SSID check in code! Obtaibing it can only be accomplished with _Wi-Fi Info Access_ entitlement and _Wireless Accessory Configuration_ capability enabled for both project and AppID which assumes apple developer program enrollment which is not my case unfornutaly =(
-You can take a look anyway
